@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="compile">
+  <property name="debuglevel" value="source,lines,vars"/>
+  <property name="target" value="1.5"/>
+  <property name="source" value="1.5"/>
+  <target name="clean">
+    <delete dir="classes"/>
+    <delete dir="chord_output"/>
+    <delete file="scuba.jar"/>
+  </target>
+  <target name="compile">
+    <mkdir dir="classes"/>
+    <copy todir="classes/framework/scuba/analyses/downcast/">
+        <fileset dir="src/framework/scuba/analyses/downcast">
+          <exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+    <copy todir="classes/framework/scuba/analyses/alias_experiment/">
+        <fileset dir="src/framework/scuba/analyses/alias_experiment">
+          <exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+    <copy todir="classes/framework/scuba/analyses/librariesfilter/">
+        <fileset dir="src/framework/scuba/analyses/librariesfilter">
+          <exclude name="**/*.java"/>
+        </fileset>
+    </copy>
+    <javac debug="true" debuglevel="${debuglevel}"
+		source="${source}" target="${target}" includeAntRuntime="false"
+		srcdir="src" destdir="classes">
+	  <classpath>
+		<pathelement location="lib/chord.jar"/>
+		<pathelement location="lib/com.microsoft.z3.jar"/>
+	  </classpath>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile"
+        description="generate the distribution" >
+    <jar jarfile="scuba.jar" basedir="classes"/>
+  </target>
+</project>
